@@ -3,7 +3,7 @@ public class memristor {
 	double resistance;
 	double resistivityConstant;
 	double appliedVoltage;
-	double appliedCurrent;
+	//double appliedCurrent;
 	double thresholdVoltage;
 	double currentPulseTime;
 	
@@ -17,15 +17,33 @@ public class memristor {
 	
 	private void resistanceFunction() {
 		if(appliedVoltage>=thresholdVoltage) {
-			resistance = resistance + resistivityConstant*appliedVoltage*currentPulseTime;
+			double t=0;
+			while(t<=currentPulseTime) {
+				resistance = resistance + resistivityConstant*appliedVoltage*0.0001/resistance;
+				t = t + 0.0001;
+			}
 			return;
 		}
 		else {
-			resistance = resistance + resistivityConstant*appliedVoltage*0.0001*currentPulseTime;
+			double t=0;
+			while(t<=currentPulseTime) {
+				resistance = resistance + resistivityConstant*appliedVoltage*0.0001*0.0001/resistance;
+				t = t + 0.0001;
+			}
 			return;
 		}
 	}
 	
+	public void applyVoltagePulse(double appliedVoltage, double currentPulseTime) {
+		this.appliedVoltage = appliedVoltage;
+		this.currentPulseTime = currentPulseTime;
+		resistanceFunction();
+		return;
+	}
+	
+	public double getCurrent() {
+		return appliedVoltage/resistance;
+	}
 	
 	
 	
